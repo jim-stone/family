@@ -18,6 +18,7 @@ from django.contrib import admin
 from django.urls import path, include
 from rest_framework import routers
 from main.api import FamilyViewset
+from main.views import IndexView, FamiliesView
 
 router = routers.DefaultRouter()
 router.register(r'families', FamilyViewset)
@@ -26,4 +27,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/', include('rest_framework.urls', namespace='rest_framework')),
     path('api/', include(router.urls)),
+    path('', IndexView.as_view()),
+    path('index/', IndexView.as_view()),
+    path('families/', FamiliesView.as_view())
 ]

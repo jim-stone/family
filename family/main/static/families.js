@@ -83,48 +83,80 @@ fetchFamilies().then(families => {
     let minusButton = newNode.getElementsByClassName("btn")[1]
 
     const exampleModal = document.getElementById('exampleModal')
-    console.log(exampleModal);
 
     plusButton.addEventListener('click', function (e) {
       let modal = document.getElementById("exampleModal")
       modal.dataset.memberId = element.id
       modal.dataset.value = 1
-      modalSaveButton = modal.getElementsByClassName("btn")[1]
-      modalSaveButton.addEventListener('click', addAssessment = function (e) {
 
+      modalTitle = modal.getElementsByClassName("modal-title")[0]
+      modalTitle.innerHTML = `Plus dla ${element.name}`
+      modalTitle.style.color = "green"
+
+      modalSaveButton = modal.getElementsByClassName("btn")[1]
+      modalCancelButton = modal.getElementsByClassName("btn")[0]
+
+      modalSaveButton.addEventListener('click', addAssessment = function (e) {
         // cleaning before
         modalSaveButton.removeEventListener('click', addAssessment);
-
+        modalCancelButton.removeEventListener('click', cancelAssessment);
         // proper function
         console.log(modal.dataset.memberId, modal.dataset.value,
           modal.getElementsByClassName("form-control")[0].value);
-
         //cleaning after
         modal.getElementsByClassName("form-control")[0].value = null;
+      });
 
+      modalCancelButton.addEventListener('click', cancelAssessment = function (e) {
+        // cleaning before
+        modalSaveButton.removeEventListener('click', addAssessment);
+        modalCancelButton.removeEventListener('click', cancelAssessment);
+        // proper function
+        console.log('Assessment cancelled');
+        //cleaning after
+        modal.getElementsByClassName("form-control")[0].value = null;
+      });
 
-      }
-      );
-    }
-    )
-
+    })
 
     minusButton.addEventListener('click', function (e) {
       let modal = document.getElementById("exampleModal")
       modal.dataset.memberId = element.id
       modal.dataset.value = -1
+
+      modalTitle = modal.getElementsByClassName("modal-title")[0]
+      modalTitle.innerHTML = `Minus dla ${element.name}`
+      modalTitle.style.color = "red"
+
       modalSaveButton = modal.getElementsByClassName("btn")[1]
-      modalSaveButton.addEventListener('click', function (e) {
-        console.log(modal.dataset)
-      }
-      )
-    }
-    )
+      modalCancelButton = modal.getElementsByClassName("btn")[0]
+
+      modalSaveButton.addEventListener('click', addAssessment = function (e) {
+        // cleaning before
+        modalSaveButton.removeEventListener('click', addAssessment);
+        modalCancelButton.removeEventListener('click', cancelAssessment);
+        // proper function
+        console.log(modal.dataset.memberId, modal.dataset.value,
+          modal.getElementsByClassName("form-control")[0].value);
+        //cleaning after
+        modal.getElementsByClassName("form-control")[0].value = null;
+      });
+
+      modalCancelButton.addEventListener('click', cancelAssessment = function (e) {
+        // cleaning before
+        modalSaveButton.removeEventListener('click', addAssessment);
+        modalCancelButton.removeEventListener('click', cancelAssessment);
+        // proper function
+        console.log('Assessment cancelled');
+        //cleaning after
+        modal.getElementsByClassName("form-control")[0].value = null;
+      });
+
+    })
 
 
 
   });
-
 })
 
 

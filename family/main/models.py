@@ -28,3 +28,17 @@ class Family(models.Model):
 
     def __str__(self) -> str:
         return "Rodzina " + self.name
+
+
+class Assessment (models.Model):
+    value = models.SmallIntegerField()
+    comment = models.CharField(max_length=1024)
+    member_target = models.ForeignKey(
+        Member, related_name='opinions_about_me', on_delete=models.CASCADE)
+    member_source = models.ForeignKey(
+        Member, related_name='opinions_from_me', on_delete=models.CASCADE)
+
+    def __str__(self) -> str:
+        sign = 'Minus' if self.value == -1 else 'Plus'
+        from_member = self.member_source.name
+        return f'{sign} od {from_member}: {self.comment}'

@@ -11,3 +11,13 @@ h1 {
     gap: 20px;
     justify-content: center;
 }
+
+.btn-success {
+    background-color: cadetblue;
+    opacity: 0.5;
+}
+
+.btn-danger {
+    background-color: orchid;
+    opacity: 0.5;
+}

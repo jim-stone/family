@@ -49,27 +49,30 @@
                     <a class="nav-link" href="/api/" tabindex="-1" aria-disabled="true">API</a>
                 </li>
 
-            </ul>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
+                        aria-expanded="false">
+                        <img src="/static/person-heart.svg">
+                    </a>
+                    <ul class="dropdown-menu">
+                        {% if user.is_authenticated %}
+                        <li>
+                            <div class="dropdown-item>">Zalogowany: {{ user }}</div>
+                        </li>
+                        <li><a class="dropdown-item" href="#">Mój profil</a></li>
+                        <li><a class="dropdown-item" href="/api/logout/">Wyloguj</a></li>
 
-            <!-- informacja o zalogowanym użytkowniku -->
-            {% if user.is_authenticated %}
-            <div class="navbar-text float-right">Zalogowany: {{ user }}
-            </div>
-            <a class="nav-link" href="/logout" tabindex="-1" aria-disabled="true">Wyloguj</a>
-            {% else %}
-            <div class="navbar-text float-right">Niezalogowany</div>
-            &nbsp;&nbsp;&nbsp;
-            <a class="nav-link" href="/login" tabindex="-1" aria-disabled="true">Zaloguj</a>
-            {% endif %}
+                        {% else %}
+                        <li><a class="dropdown-item" href="/api/login/">Zaloguj</a></li>
+                        {% endif %}
+                    </ul>
+                </li>
+            </ul>
         </div>
     </nav>
 
-
-
     {% block content %}
-
     {% endblock %}
-
 </body>
 
 </html>

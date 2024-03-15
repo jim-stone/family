@@ -13,7 +13,15 @@ async function fetchAboutMember(memberId) {
 
 fetchAboutMember(memberId).then(
     opinions => {
-        console.log(opinions);
+        opinions.forEach(opinion => {
+            console.log(opinion);
+            let newElement = document.createElement('div');
+            let sign = opinion.value + 1 ? 'Plus' : 'Minus';
+            let repr = `${sign} od ${opinion.member_source.name} za: ${opinion.comment}`;
+            newElement.innerText = repr;
+            opinionsContainer.appendChild(newElement);
+
+        });
     }
 )
 

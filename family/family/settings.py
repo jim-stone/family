@@ -134,3 +134,6 @@ REST_FRAMEWORK = {
         'rest_framework.permissions.IsAuthenticated',
     ],
 }
+
+LOGIN_REDIRECT_URL = '/index/'
+LOGOUT_REDIRECT_URL = '/index/'

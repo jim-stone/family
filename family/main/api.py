@@ -1,4 +1,5 @@
-from django.contrib.auth import login
+from django.contrib.auth import login, logout
+from django.shortcuts import redirect
 from rest_framework import viewsets, permissions, status, views
 from rest_framework.response import Response
 from rest_framework.decorators import action
@@ -55,3 +56,9 @@ class LoginView(views.APIView):
         user = serializer.validated_data['user']
         login(request, user)
         return Response(None, status=status.HTTP_202_ACCEPTED)
+        return redirect('/index/')
+
+
+class LogoutView (views.APIView):
+    def post(self, request):
+        logout(request)

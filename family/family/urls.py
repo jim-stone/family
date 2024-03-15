@@ -17,19 +17,21 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 from rest_framework import routers
-from main.api import FamilyViewset, ListAssessmentsByTarget
-from main.views import IndexView, FamiliesView
+from main.api import FamilyViewset, AsessmentViewset, LoginView
+from main.views import IndexView, FamiliesView, OpinionsView
 
 router = routers.DefaultRouter()
 router.register(r'families', FamilyViewset)
+router.register(r'opinions', AsessmentViewset)
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/', include('rest_framework.urls', namespace='rest_framework')),
     path('api/', include(router.urls)),
-    path(r'api/assessments/',
-         ListAssessmentsByTarget.as_view()),
     path('', IndexView.as_view()),
+    path('login/', LoginView.as_view()),
     path('index/', IndexView.as_view()),
-    path('families/', FamiliesView.as_view())
+    path('families/', FamiliesView.as_view()),
+    path('opinions/<int:pk>/', OpinionsView.as_view()),
+
 ]

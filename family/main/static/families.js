@@ -21,7 +21,7 @@ const memberCardTemplate = `<div class="card" style="width: 10rem;" id="Placehol
             </svg>
         </button>
         <br><br>
-        <p><a href="">Lista ocen</a></p>
+        <p><a href="/opinions/PlaceholderMemberId" class="opinionsLink">Lista ocen</a></p>
         <p><a href="">Lista życzeń</a></p>
 
 
@@ -74,11 +74,17 @@ fetchFamilies().then(families => {
 
   members.forEach(element => {
     let newNode = document.createElement('div');
-    let newNodeHTML = memberCardTemplate.replace('PlaceholderMemberName', element.name);
-    newNodeHTML = newNodeHTML.replace('PlaceholderMemberId', element.id);
+    let newNodeHTML = memberCardTemplate.replaceAll('PlaceholderMemberName', element.name);
+    newNodeHTML = newNodeHTML.replaceAll('PlaceholderMemberId', element.id);
     newNode.innerHTML = newNodeHTML;
 
+    let opinionsLink = newNode.getElementsByClassName("opinionsLink")
+    // opinionsLink.getAttribute("href")
+    // opinionsLink.href = `opinions/${element.id}`
+    // console.log(opinionsLink.)
+
     membersContainer.appendChild(newNode)
+    console.log(newNode)
     let plusButton = newNode.getElementsByClassName("btn")[0]
     let minusButton = newNode.getElementsByClassName("btn")[1]
 

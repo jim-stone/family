@@ -12,3 +12,8 @@ class IndexView(View):
 class FamiliesView(View):
     def get(self, request):
         return render(request, 'families.html')
+
+
+class OpinionsView(View):
+    def get(self, request, pk=None):
+        return render(request, 'opinions.html')

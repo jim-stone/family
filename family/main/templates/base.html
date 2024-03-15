@@ -21,10 +21,50 @@
     {% block extra_styles_and_scripts %}
     {% endblock %}
 
-    <title>System Zarządzania Rodziną</title>
+    <title>Family Master</title>
 </head>
 
 <body>
+
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <a class="navbar-brand" href="/">Strona główna</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav mr-auto">
+
+                <!-- linki do API i panelu admin-->
+                <li class="nav-item">
+                    <a class="nav-link" href="/families" tabindex="-1" aria-disabled="true">Moja rodzina</a>
+                </li>
+
+
+                <li class="nav-item">
+                    <a class="nav-link" href="/admin/" tabindex="-1" aria-disabled="true">Admin</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/api/" tabindex="-1" aria-disabled="true">API</a>
+                </li>
+
+            </ul>
+
+            <!-- informacja o zalogowanym użytkowniku -->
+            {% if user.is_authenticated %}
+            <div class="navbar-text float-right">Zalogowany: {{ user }}
+            </div>
+            <a class="nav-link" href="/logout" tabindex="-1" aria-disabled="true">Wyloguj</a>
+            {% else %}
+            <div class="navbar-text float-right">Niezalogowany</div>
+            &nbsp;&nbsp;&nbsp;
+            <a class="nav-link" href="/login" tabindex="-1" aria-disabled="true">Zaloguj</a>
+            {% endif %}
+        </div>
+    </nav>
+
+
 
     {% block content %}
 

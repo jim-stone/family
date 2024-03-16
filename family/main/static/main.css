@@ -12,6 +12,14 @@ h1 {
     justify-content: center;
 }
 
+.containerNoFlex {
+    margin: auto;
+    width: 50%;
+    gap: 20px;
+    justify-content: center;
+}
+
+
 .btn-success {
     background-color: cadetblue;
     opacity: 0.5;
@@ -20,4 +28,20 @@ h1 {
 .btn-danger {
     background-color: orchid;
     opacity: 0.5;
+}
+
+.Plus {
+    display: block;
+    color: cadetblue;
+}
+
+.Minus {
+    display: block;
+    color: orchid;
+}
+
+.flex-br {
+    flex-basis: 100%;
+    width: 100%;
+    height: 0;
 }

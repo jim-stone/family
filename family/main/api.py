@@ -3,6 +3,7 @@ from django.shortcuts import redirect
 from rest_framework import viewsets, permissions, status, views
 from rest_framework.response import Response
 from rest_framework.decorators import action
+from rest_framework.exceptions import PermissionDenied
 from .models import Family, Assessment, Member
 from .serializers import FamilySerializer, AssessmentSerializer, AssessmentCreateSerializer, LoginSerializer
 
@@ -27,15 +28,16 @@ class AsessmentViewset(viewsets.ViewSet):
         return Response(serializer.data)
 
     def create(self, request, *args, **kwargs):
-
         serializer = AssessmentCreateSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         family_id = serializer.validated_data['member_target'].family_id
         user_id = request.user.id
-        member_source = Member.objects.get(user=user_id, family=family_id)
-        serializer.validated_data['member_source'] = member_source
-        serializer.save()
-        return Response(serializer.data, status=status.HTTP_201_CREATED)
+        if user_id:
+            member_source = Member.objects.get(user=user_id, family=family_id)
+            serializer.validated_data['member_source'] = member_source
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_403_FORBIDDEN)
 
     @action(detail=False, methods=['get'], url_path='about_member/(?P<member_id>[^/.]+)')
     def about_member(self, request, member_id=None):
@@ -56,9 +58,9 @@ class LoginView(views.APIView):
         user = serializer.validated_data['user']
         login(request, user)
         return Response(None, status=status.HTTP_202_ACCEPTED)
-        return redirect('/index/')
 
 
 class LogoutView (views.APIView):
     def post(self, request):
         logout(request)
+        return redirect('/index/')

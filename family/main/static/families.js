@@ -1,4 +1,5 @@
-const urlFamilies = '/api/families'
+const urlFamilies = '/api/families/'
+const urlOpinions = '/api/opinions/'
 const membersContainer = document.getElementById('membersContainer')
 
 const memberCardTemplate = `<div class="card" style="width: 10rem;" id="PlaceholderMemberId">
@@ -48,8 +49,6 @@ const memberCardTemplate = `<div class="card" style="width: 10rem;" id="Placehol
   </div>
 </div>
 
-
-
     </div>
 </div>`
 
@@ -61,10 +60,20 @@ async function fetchFamilies() {
 }
 
 
-// function addAssessment(e, userId, value) {
-//   console.log(userId, value);
-//   console.log(e.target)
-// }
+async function postData(url = '', data = {}) {
+  const csrf_token = document.cookie.split('csrftoken=')[1]
+  const response = await fetch(url, {
+    method: "POST",
+    headers: {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json',
+      "X-CSRFToken": csrf_token
+    },
+    body: JSON.stringify(data),
+    redirect: "follow"
+  })
+  return response.json();
+}
 
 
 fetchFamilies().then(families => {
@@ -77,14 +86,8 @@ fetchFamilies().then(families => {
     let newNodeHTML = memberCardTemplate.replaceAll('PlaceholderMemberName', element.name);
     newNodeHTML = newNodeHTML.replaceAll('PlaceholderMemberId', element.id);
     newNode.innerHTML = newNodeHTML;
-
     let opinionsLink = newNode.getElementsByClassName("opinionsLink")
-    // opinionsLink.getAttribute("href")
-    // opinionsLink.href = `opinions/${element.id}`
-    // console.log(opinionsLink.)
-
     membersContainer.appendChild(newNode)
-    console.log(newNode)
     let plusButton = newNode.getElementsByClassName("btn")[0]
     let minusButton = newNode.getElementsByClassName("btn")[1]
 
@@ -107,8 +110,18 @@ fetchFamilies().then(families => {
         modalSaveButton.removeEventListener('click', addAssessment);
         modalCancelButton.removeEventListener('click', cancelAssessment);
         // proper function
-        console.log(modal.dataset.memberId, modal.dataset.value,
-          modal.getElementsByClassName("form-control")[0].value);
+        data = {
+          "member_target": modal.dataset.memberId,
+          "value": modal.dataset.value,
+          "comment": modal.getElementsByClassName("form-control")[0].value
+        };
+        postData(url = urlOpinions, data = data).then(response => {
+          if (
+            response.detail == "Authentication credentials were not provided."
+          ) {
+            window.alert("Przed tą czynnością musisz się zalogować")
+          };
+        });
         //cleaning after
         modal.getElementsByClassName("form-control")[0].value = null;
       });
@@ -142,8 +155,18 @@ fetchFamilies().then(families => {
         modalSaveButton.removeEventListener('click', addAssessment);
         modalCancelButton.removeEventListener('click', cancelAssessment);
         // proper function
-        console.log(modal.dataset.memberId, modal.dataset.value,
-          modal.getElementsByClassName("form-control")[0].value);
+        data = {
+          "member_target": modal.dataset.memberId,
+          "value": modal.dataset.value,
+          "comment": modal.getElementsByClassName("form-control")[0].value
+        };
+        postData(url = urlOpinions, data = data).then(response => {
+          if (
+            response.detail == "Authentication credentials were not provided."
+          ) {
+            window.alert("Przed tą czynnością musisz się zalogować")
+          };
+        });
         //cleaning after
         modal.getElementsByClassName("form-control")[0].value = null;
       });

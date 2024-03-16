@@ -63,7 +63,14 @@
                         <li><a class="dropdown-item" href="/api/logout/">Wyloguj</a></li>
 
                         {% else %}
-                        <li><a class="dropdown-item" href="/api/login/">Zaloguj</a></li>
+                        <li>
+                            <div class="dropdown-item" data-bs-toggle="modal" data-bs-target="#loginModal"
+                                id="loginLink">
+                                Zaloguj się
+                            </div>
+                        </li>
+                        <li><a class="dropdown-item" href="">Zarejestruj się</a></li>
+                        <li><a class="dropdown-item" href="/api/login/">Zaloguj się 2</a></li>
                         {% endif %}
                     </ul>
                 </li>
@@ -73,6 +80,45 @@
 
     {% block content %}
     {% endblock %}
+
+
+    <!-- Login modal -->
+    <div class="modal fade" id="loginModal" tabindex="-1" aria-labelledby="loginModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="exampleModalLabel">Logowanie</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <form>
+                    {% csrf_token %}
+                    <div class="modal-body">
+                        <div class="input-group input-group-lg">
+                            <span class="input-group-text" id="inputGroup-sizing-lg">Login: </span>
+                            <input type="text" class="form-control" aria-label="Sizing example input"
+                                aria-describedby="inputGroup-sizing-lg" id="username">
+                        </div><br>
+                        <div class="input-group input-group-lg">
+                            <span class="input-group-text" id="inputGroup-sizing-lg">Hasło: </span>
+                            <input type="password" class="form-control" aria-label="Sizing example input"
+                                aria-describedby="inputGroup-sizing-lg" id="password">
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Anuluj</button>
+                        <button type="button" class="btn btn-primary" data-bs-dismiss="modal"
+                            id="loginButton">Zaloguj</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+
+
+
+
+    <script type="module" src="/static/base.js"></script>
 </body>
 
 </html>

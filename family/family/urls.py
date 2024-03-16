@@ -29,7 +29,7 @@ urlpatterns = [
     path('api/', include('rest_framework.urls', namespace='rest_framework')),
     path('api/', include(router.urls)),
     path('', IndexView.as_view()),
-    path('api/login/', LoginView.as_view()),
+    path('login/', LoginView.as_view()),
     path('api/logout/', LogoutView.as_view()),
     path('index/', IndexView.as_view()),
     path('families/', FamiliesView.as_view()),

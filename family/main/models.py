@@ -39,8 +39,12 @@ class Assessment (models.Model):
         Member, related_name='opinions_about_me', on_delete=models.CASCADE)
     member_source = models.ForeignKey(
         Member, related_name='opinions_from_me', on_delete=models.CASCADE)
+    created_on = models.DateTimeField(auto_now_add=True)
 
     def __str__(self) -> str:
         sign = 'Minus' if self.value == -1 else 'Plus'
         from_member = self.member_source.name
         return f'{sign} od {from_member}: {self.comment}'
+
+    class Meta:
+        ordering = ['-created_on']

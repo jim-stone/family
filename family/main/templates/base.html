@@ -69,8 +69,9 @@
                                 Zaloguj się
                             </div>
                         </li>
-                        <li><a class="dropdown-item" href="">Zarejestruj się</a></li>
-                        <li><a class="dropdown-item" href="/api/login/">Zaloguj się 2</a></li>
+                        <li><a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#registerModal"
+                                id="registerLink">Zarejestruj się</a></li>
+                        <!-- <li><a class="dropdown-item" href="/api/login/">Zaloguj się 2</a></li> -->
                         {% endif %}
                     </ul>
                 </li>
@@ -116,7 +117,63 @@
 
 
 
+    <!-- Register modal -->
+    <div class="modal fade" id="registerModal" tabindex="-1" aria-labelledby="registerModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="exampleModalLabel">Rejestracja</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <form>
+                    {% csrf_token %}
+                    <div class="modal-body">
+                        <div class="input-group input-group-lg">
+                            <span class="input-group-text" id="inputGroup-sizing-lg">Imię: </span>
+                            <input type="text" class="form-control" aria-label="Sizing example input"
+                                aria-describedby="inputGroup-sizing-lg" id="first_name">
+                        </div><br>
 
+                        <div class="input-group input-group-lg">
+                            <span class="input-group-text" id="inputGroup-sizing-lg">Nazwisko: </span>
+                            <input type="text" class="form-control" aria-label="Sizing example input"
+                                aria-describedby="inputGroup-sizing-lg" id="last_name">
+                        </div><br>
+
+                        <div class="input-group input-group-lg">
+                            <span class="input-group-text" id="inputGroup-sizing-lg">Wybierz login: </span>
+                            <input type="text" class="form-control" aria-label="Sizing example input"
+                                aria-describedby="inputGroup-sizing-lg" id="new-username">
+                        </div><br>
+
+                        <div class="input-group input-group-lg">
+                            <span class="input-group-text" id="inputGroup-sizing-lg">Email: </span>
+                            <input type="email" class="form-control" aria-label="Sizing example input"
+                                aria-describedby="inputGroup-sizing-lg" id="email">
+                        </div><br>
+
+                        <div class="input-group input-group-lg">
+                            <span class="input-group-text" id="inputGroup-sizing-lg">Hasło: </span>
+                            <input type="password" class="form-control" aria-label="Sizing example input"
+                                aria-describedby="inputGroup-sizing-lg" id="new-password">
+                        </div> <br>
+
+                        <div class="input-group input-group-lg">
+                            <span class="input-group-text" id="inputGroup-sizing-lg">Powtórz hasło: </span>
+                            <input type="password" class="form-control" aria-label="Sizing example input"
+                                aria-describedby="inputGroup-sizing-lg" id="new-password-repeat">
+                        </div>
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Anuluj</button>
+                        <button type="button" class="btn btn-primary" data-bs-dismiss="modal"
+                            id="registerButton">Zarejestruj</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
 
     <script type="module" src="/static/base.js"></script>
 </body>

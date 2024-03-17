@@ -1,18 +1,19 @@
 from django.contrib.auth import login, logout
+from django.contrib.auth.models import User
 from django.shortcuts import redirect
 from rest_framework import viewsets, permissions, status, views
 from rest_framework.response import Response
 from rest_framework.decorators import action
 from rest_framework.exceptions import PermissionDenied
 from .models import Family, Assessment, Member
-from .serializers import FamilySerializer, AssessmentSerializer, AssessmentCreateSerializer, LoginSerializer
+from .serializers import FamilySerializer, AssessmentSerializer, AssessmentCreateSerializer, LoginSerializer, UserSerializer
 
 
 class FamilyViewset(viewsets.ModelViewSet):
     queryset = Family.objects.all()
     serializer_class = FamilySerializer
     permission_classes = [
-        permissions.AllowAny
+        permissions.IsAuthenticated
     ]
 
 
@@ -64,3 +65,27 @@ class LogoutView (views.APIView):
     def post(self, request):
         logout(request)
         return redirect('/index/')
+
+
+class UserViewset(viewsets.ModelViewSet):
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
+    permission_classes = [
+        permissions.AllowAny
+    ]
+
+    def create(self, request):
+        try:
+            serializer = UserSerializer(data=request.data)
+            serializer.is_valid(raise_exception=True)
+            user_data = {}
+            user_data.update(serializer.data)
+            user_data.update(
+                {'password': request.data['password']}
+            )
+            print(user_data)
+            User.objects.create_user(**user_data)
+        except Exception as e:
+            print(e)
+            return Response(serializer.errors)
+        return Response(serializer.data, status=status.HTTP_201_CREATED)

@@ -1,4 +1,5 @@
 from django.contrib.auth import authenticate
+from django.contrib.auth.models import User
 from rest_framework.serializers import ModelSerializer, Serializer, CharField, ValidationError
 from .models import Family, Member, Assessment
 
@@ -64,3 +65,12 @@ class LoginSerializer(Serializer):
         # It will be used in the view.
         attrs['user'] = user
         return attrs
+
+
+class UserSerializer (ModelSerializer):
+    members = MemberSerializer(many=True, read_only=True)
+
+    class Meta:
+        model = User
+        fields = ['id', 'first_name', 'last_name',
+                  'username', 'email', 'members']

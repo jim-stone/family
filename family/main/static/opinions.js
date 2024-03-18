@@ -4,6 +4,7 @@ const opinionsContainer = document.getElementById('opinionsContainer');
 const memberId = location.href.split('/')[4]
 
 const endPoint = urlOpinions + memberId;
+const header = document.getElementById('header')
 
 async function fetchAboutMember(memberId) {
     let response = await fetch(endPoint);
@@ -12,11 +13,10 @@ async function fetchAboutMember(memberId) {
 }
 
 
-
 fetchAboutMember(memberId).then(
     opinions => {
         opinions.forEach(opinion => {
-            console.log();
+            header.innerText = `Opinie o ${opinion.member_target.name}`;
             let newElement = document.createElement('tr');
             let sign = opinion.value + 1 ? 'Plus' : 'Minus';
             let repr = `${sign} od ${opinion.member_source.name} 
@@ -26,6 +26,6 @@ fetchAboutMember(memberId).then(
             opinionsContainer.appendChild(newElement);
         });
     }
-)
+);
 
-console.log('???????????????')
+

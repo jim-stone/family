@@ -7,6 +7,7 @@ from rest_framework.decorators import action
 from rest_framework.exceptions import PermissionDenied
 from .models import Family, Assessment, Member
 from .serializers import FamilySerializer, AssessmentSerializer, AssessmentCreateSerializer, LoginSerializer, UserSerializer
+from .custom_permissions import family_member_filter
 
 
 class FamilyViewset(viewsets.ModelViewSet):
@@ -15,6 +16,12 @@ class FamilyViewset(viewsets.ModelViewSet):
     permission_classes = [
         permissions.IsAuthenticated
     ]
+
+    def list(self, request):
+        user_families = family_member_filter(request)
+        queryset = Family.objects.filter(id__in=user_families)
+        serializer = FamilySerializer(queryset, many=True)
+        return Response(serializer.data)
 
 
 class AsessmentViewset(viewsets.ViewSet):
@@ -58,7 +65,7 @@ class LoginView(views.APIView):
         serializer.is_valid(raise_exception=True)
         user = serializer.validated_data['user']
         login(request, user)
-        return Response(None, status=status.HTTP_202_ACCEPTED)
+        return Response(f'User logged in: {user.username}', status=status.HTTP_202_ACCEPTED)
 
 
 class LogoutView (views.APIView):

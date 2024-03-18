@@ -1,25 +1,10 @@
 import { postData } from "/static/common.js";
 
+
 const urlLogin = '/login/'
 const urlRegister = '/api/users/'
 const loginButton = document.getElementById('loginButton');
 const registerButton = document.getElementById('registerButton');
-
-// async function postData(url = '', data = {}) {
-//     const csrf_token = document.cookie.split('csrftoken=')[1]
-//     const response = await fetch(url, {
-//         method: "POST",
-//         headers: {
-//             'Accept': 'application/json',
-//             'Content-Type': 'application/json',
-//             "X-CSRFToken": csrf_token
-//         },
-//         body: JSON.stringify(data),
-//         redirect: "follow"
-//     })
-//     return response.json();
-// };
-
 
 
 registerButton.addEventListener('click', e => {
@@ -55,16 +40,16 @@ registerButton.addEventListener('click', e => {
 loginButton.addEventListener('click', e => {
     let u = document.getElementById('username').value;
     let p = document.getElementById('password').value;
-    console.log(u, p);
-    console.log(document.cookie);
+    // console.log(u, p);
+    // console.log(document.cookie);
     let data = {
         "username": u,
         "password": p
     };
-    console.log(data);
+    // console.log(data);
     postData(urlLogin, data)
         .then(() => {
-            location.reload(true);
+            location.reload();
         });
 });
 

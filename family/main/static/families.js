@@ -1,3 +1,5 @@
+import { postData } from "/static/common.js";
+
 const urlFamilies = '/api/families/'
 const urlOpinions = '/api/opinions/'
 const membersContainer = document.getElementById('membersContainer')
@@ -60,132 +62,126 @@ async function fetchFamilies() {
 }
 
 
-async function postData(url = '', data = {}) {
-  const csrf_token = document.cookie.split('csrftoken=')[1]
-  const response = await fetch(url, {
-    method: "POST",
-    headers: {
-      'Accept': 'application/json',
-      'Content-Type': 'application/json',
-      "X-CSRFToken": csrf_token
-    },
-    body: JSON.stringify(data),
-    redirect: "follow"
-  })
-  return response.json();
-}
-
-
 fetchFamilies().then(families => {
 
-  let firstFamily = families[0];
-  let members = firstFamily.members;
-
-  members.forEach(element => {
+  if (families == '') {
+    const msg = "Jesteś niezalogowany lub nie należysz jeszcze do żadnej rodziny.";
     let newNode = document.createElement('div');
-    let newNodeHTML = memberCardTemplate.replaceAll('PlaceholderMemberName', element.name);
-    newNodeHTML = newNodeHTML.replaceAll('PlaceholderMemberId', element.id);
-    newNode.innerHTML = newNodeHTML;
-    let opinionsLink = newNode.getElementsByClassName("opinionsLink")
-    membersContainer.appendChild(newNode)
-    let plusButton = newNode.getElementsByClassName("btn")[0]
-    let minusButton = newNode.getElementsByClassName("btn")[1]
+    newNode.innerText = msg;
+    membersContainer.appendChild(newNode);
+  }
 
-    const exampleModal = document.getElementById('exampleModal')
+  else {
+    let firstFamily = families[0];
+    let members = firstFamily.members;
+    let addAssessment = function () { }
+    let cancelAssessment = function () { }
 
-    plusButton.addEventListener('click', function (e) {
-      let modal = document.getElementById("exampleModal")
-      modal.dataset.memberId = element.id
-      modal.dataset.value = 1
+    members.forEach(element => {
+      let newNode = document.createElement('div');
+      let newNodeHTML = memberCardTemplate.replaceAll('PlaceholderMemberName', element.name);
+      newNodeHTML = newNodeHTML.replaceAll('PlaceholderMemberId', element.id);
+      newNode.innerHTML = newNodeHTML;
+      let opinionsLink = newNode.getElementsByClassName("opinionsLink")
+      membersContainer.appendChild(newNode)
+      let plusButton = newNode.getElementsByClassName("btn")[0]
+      let minusButton = newNode.getElementsByClassName("btn")[1]
 
-      modalTitle = modal.getElementsByClassName("modal-title")[0]
-      modalTitle.innerHTML = `Plus dla ${element.name}`
-      modalTitle.style.color = "green"
 
-      modalSaveButton = modal.getElementsByClassName("btn")[1]
-      modalCancelButton = modal.getElementsByClassName("btn")[0]
+      plusButton.addEventListener('click', function (e) {
+        let modal = document.getElementById("exampleModal")
+        modal.dataset.memberId = element.id
+        modal.dataset.value = 1
 
-      modalSaveButton.addEventListener('click', addAssessment = function (e) {
-        // cleaning before
-        modalSaveButton.removeEventListener('click', addAssessment);
-        modalCancelButton.removeEventListener('click', cancelAssessment);
-        // proper function
-        data = {
-          "member_target": modal.dataset.memberId,
-          "value": modal.dataset.value,
-          "comment": modal.getElementsByClassName("form-control")[0].value
-        };
-        postData(url = urlOpinions, data = data).then(response => {
-          if (
-            response.detail == "Authentication credentials were not provided."
-          ) {
-            window.alert("Przed tą czynnością musisz się zalogować")
+        let modalTitle = modal.getElementsByClassName("modal-title")[0]
+        modalTitle.innerHTML = `Plus dla ${element.name}`
+        modalTitle.style.color = "green"
+
+        let modalSaveButton = modal.getElementsByClassName("btn")[1]
+        let modalCancelButton = modal.getElementsByClassName("btn")[0]
+
+        modalSaveButton.addEventListener('click', addAssessment = function (e) {
+          // cleaning before
+          modalSaveButton.removeEventListener('click', addAssessment);
+          modalCancelButton.removeEventListener('click', cancelAssessment);
+          // proper function
+          let data = {
+            "member_target": modal.dataset.memberId,
+            "value": modal.dataset.value,
+            "comment": modal.getElementsByClassName("form-control")[0].value
           };
+          let url = urlOpinions;
+          postData(url = urlOpinions, data = data).then(response => {
+            if (
+              response.detail == "Authentication credentials were not provided."
+            ) {
+              window.alert("Przed tą czynnością musisz się zalogować")
+            };
+          });
+          //cleaning after
+          modal.getElementsByClassName("form-control")[0].value = null;
         });
-        //cleaning after
-        modal.getElementsByClassName("form-control")[0].value = null;
-      });
 
-      modalCancelButton.addEventListener('click', cancelAssessment = function (e) {
-        // cleaning before
-        modalSaveButton.removeEventListener('click', addAssessment);
-        modalCancelButton.removeEventListener('click', cancelAssessment);
-        // proper function
-        console.log('Assessment cancelled');
-        //cleaning after
-        modal.getElementsByClassName("form-control")[0].value = null;
-      });
+        modalCancelButton.addEventListener('click', cancelAssessment = function (e) {
+          // cleaning before
+          modalSaveButton.removeEventListener('click', addAssessment);
+          modalCancelButton.removeEventListener('click', cancelAssessment);
+          // proper function
+          console.log('Assessment cancelled');
+          //cleaning after
+          modal.getElementsByClassName("form-control")[0].value = null;
+        });
 
-    })
+      })
 
-    minusButton.addEventListener('click', function (e) {
-      let modal = document.getElementById("exampleModal")
-      modal.dataset.memberId = element.id
-      modal.dataset.value = -1
+      minusButton.addEventListener('click', function (e) {
+        let modal = document.getElementById("exampleModal")
+        modal.dataset.memberId = element.id
+        modal.dataset.value = -1
 
-      modalTitle = modal.getElementsByClassName("modal-title")[0]
-      modalTitle.innerHTML = `Minus dla ${element.name}`
-      modalTitle.style.color = "red"
+        let modalTitle = modal.getElementsByClassName("modal-title")[0]
+        modalTitle.innerHTML = `Minus dla ${element.name}`
+        modalTitle.style.color = "red"
 
-      modalSaveButton = modal.getElementsByClassName("btn")[1]
-      modalCancelButton = modal.getElementsByClassName("btn")[0]
+        let modalSaveButton = modal.getElementsByClassName("btn")[1]
+        let modalCancelButton = modal.getElementsByClassName("btn")[0]
 
-      modalSaveButton.addEventListener('click', addAssessment = function (e) {
-        // cleaning before
-        modalSaveButton.removeEventListener('click', addAssessment);
-        modalCancelButton.removeEventListener('click', cancelAssessment);
-        // proper function
-        data = {
-          "member_target": modal.dataset.memberId,
-          "value": modal.dataset.value,
-          "comment": modal.getElementsByClassName("form-control")[0].value
-        };
-        postData(url = urlOpinions, data = data).then(response => {
-          if (
-            response.detail == "Authentication credentials were not provided."
-          ) {
-            window.alert("Przed tą czynnością musisz się zalogować")
+        modalSaveButton.addEventListener('click', addAssessment = function (e) {
+          // cleaning before
+          modalSaveButton.removeEventListener('click', addAssessment);
+          modalCancelButton.removeEventListener('click', cancelAssessment);
+          // proper function
+          let data = {
+            "member_target": modal.dataset.memberId,
+            "value": modal.dataset.value,
+            "comment": modal.getElementsByClassName("form-control")[0].value
           };
+          let url = urlOpinions;
+          postData(url = urlOpinions, data = data).then(response => {
+            if (
+              response.detail == "Authentication credentials were not provided."
+            ) {
+              window.alert("Przed tą czynnością musisz się zalogować")
+            };
+          });
+          //cleaning after
+          modal.getElementsByClassName("form-control")[0].value = null;
         });
-        //cleaning after
-        modal.getElementsByClassName("form-control")[0].value = null;
-      });
 
-      modalCancelButton.addEventListener('click', cancelAssessment = function (e) {
-        // cleaning before
-        modalSaveButton.removeEventListener('click', addAssessment);
-        modalCancelButton.removeEventListener('click', cancelAssessment);
-        // proper function
-        console.log('Assessment cancelled');
-        //cleaning after
-        modal.getElementsByClassName("form-control")[0].value = null;
-      });
+        modalCancelButton.addEventListener('click', cancelAssessment = function (e) {
+          // cleaning before
+          modalSaveButton.removeEventListener('click', addAssessment);
+          modalCancelButton.removeEventListener('click', cancelAssessment);
+          // proper function
+          console.log('Assessment cancelled');
+          //cleaning after
+          modal.getElementsByClassName("form-control")[0].value = null;
+        });
 
-    })
+      })
 
-
-
-  });
+    });
+  }
 })
 
 

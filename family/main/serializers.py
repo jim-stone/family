@@ -1,7 +1,7 @@
 from django.contrib.auth import authenticate
 from django.contrib.auth.models import User
 from rest_framework.serializers import ModelSerializer, Serializer, CharField, ValidationError
-from .models import Family, Member, Assessment
+from .models import Family, Member, Assessment, Wish
 
 
 class MemberSerializer(ModelSerializer):
@@ -74,3 +74,11 @@ class UserSerializer (ModelSerializer):
         model = User
         fields = ['id', 'first_name', 'last_name',
                   'username', 'email', 'members']
+
+
+class WishSerializer (ModelSerializer):
+    owner = UserSerializer()
+
+    class Meta:
+        model = Wish
+        fields = '__all__'

@@ -25,7 +25,7 @@ const memberCardTemplate = `<div class="card" style="width: 10rem;" id="Placehol
         </button>
         <br><br>
         <p><a href="/opinions/PlaceholderMemberId" class="opinionsLink">Lista ocen</a></p>
-        <p><a href="">Lista życzeń</a></p>
+        <p><a href="/wishes/PlaceholderMemberId" class="wishesLink">Lista życzeń</a></p>
 
 
 

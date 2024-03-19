@@ -5,9 +5,20 @@ from rest_framework import viewsets, permissions, status, views
 from rest_framework.response import Response
 from rest_framework.decorators import action
 from rest_framework.exceptions import PermissionDenied
-from .models import Family, Assessment, Member
-from .serializers import FamilySerializer, AssessmentSerializer, AssessmentCreateSerializer, LoginSerializer, UserSerializer
+from .models import Family, Assessment, Member, Wish
+from .serializers import (
+    FamilySerializer, AssessmentSerializer, AssessmentCreateSerializer,
+    LoginSerializer, UserSerializer, WishSerializer
+)
 from .custom_permissions import family_member_filter
+
+
+class WishViewset (viewsets.ModelViewSet):
+    queryset = Wish.objects.all()
+    serializer_class = WishSerializer
+    permission_classes = [
+        permissions.IsAuthenticated
+    ]
 
 
 class FamilyViewset(viewsets.ModelViewSet):

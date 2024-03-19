@@ -17,13 +17,16 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 from rest_framework import routers
-from main.api import FamilyViewset, AsessmentViewset, LoginView, LogoutView, UserViewset
-from main.views import IndexView, FamiliesView, OpinionsView
+from main.api import (FamilyViewset, AsessmentViewset,
+                      LoginView, LogoutView, UserViewset,
+                      WishViewset)
+from main.views import IndexView, FamiliesView, OpinionsView, WishesView
 
 router = routers.DefaultRouter()
 router.register(r'families', FamilyViewset)
 router.register(r'opinions', AsessmentViewset)
 router.register(r'users', UserViewset)
+router.register(r'wishes', WishViewset)
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -35,5 +38,6 @@ urlpatterns = [
     path('index/', IndexView.as_view()),
     path('families/', FamiliesView.as_view()),
     path('opinions/<int:pk>/', OpinionsView.as_view()),
+    path('wishes/<int:pk>/', WishesView.as_view()),
 
 ]

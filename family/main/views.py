@@ -17,3 +17,8 @@ class FamiliesView(View):
 class OpinionsView(View):
     def get(self, request, pk=None):
         return render(request, 'opinions.html')
+
+
+class WishesView(View):
+    def get(self, request, pk=None):
+        return render(request, 'wishes.html')

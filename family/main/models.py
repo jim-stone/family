@@ -25,6 +25,7 @@ class Member (models.Model):
         Family, related_name='members',
         on_delete=models.CASCADE)
     is_boss = models.BooleanField(default=False)
+    is_favourite = models.BooleanField(default=False)
 
     def __str__(self) -> str:
         return self.name
@@ -53,11 +54,12 @@ class Assessment (models.Model):
 
 class Wish(models.Model):
     descriprion = models.CharField(max_length=2048)
-    owner = models.ForeignKey(
-        User, related_name='my_wishes', on_delete=models.CASCADE)
+    owner_user = models.ForeignKey(
+        User, related_name='my_wishes', on_delete=models.CASCADE, blank=True, null=True)
+    owner_member = models.ForeignKey(
+        Member, related_name='my_wishes', on_delete=models.CASCADE, blank=True, null=True)
     provider = models.ForeignKey(
-        User, related_name='my_gifts', on_delete=models.CASCADE,
-        null=True)
+        User, related_name='my_gifts', on_delete=models.CASCADE, blank=True, null=True)
     created_on = models.DateTimeField(auto_now_add=True)
 
     class Status (models.IntegerChoices):
@@ -65,7 +67,10 @@ class Wish(models.Model):
         in_progress = 2,
         completed = 3
     status = models.PositiveSmallIntegerField(
-        choices=Status.choices, db_index=True)
+        choices=Status.choices, db_index=True, default=1)
 
     class Meta:
         ordering = ['status', '-created_on']
+
+    def __str__(self) -> str:
+        return self.descriprion

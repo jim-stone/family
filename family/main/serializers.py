@@ -1,6 +1,8 @@
 from django.contrib.auth import authenticate
 from django.contrib.auth.models import User
-from rest_framework.serializers import ModelSerializer, Serializer, CharField, ValidationError
+from rest_framework.serializers import (
+    ModelSerializer, Serializer, CharField, ValidationError,
+    SerializerMethodField, ChoiceField)
 from .models import Family, Member, Assessment, Wish
 
 
@@ -76,8 +78,24 @@ class UserSerializer (ModelSerializer):
                   'username', 'email', 'members']
 
 
-class WishSerializer (ModelSerializer):
-    owner = UserSerializer()
+class WishReadSerializer (ModelSerializer):
+    owner_user = UserSerializer()
+    owner_member = MemberSerializer()
+    status = ChoiceField(choices=Wish.Status.choices)
+    status_value = SerializerMethodField()
+
+    def get_status_value(self, obj):
+        return obj.get_status_display()
+
+    class Meta:
+        model = Wish
+        fields = ['owner_user', 'owner_member', 'status', 'id', 'created_on',
+                  'descriprion', 'status_value']
+
+
+class WishWriteSerializer (ModelSerializer):
+    # owner_user = UserSerializer()
+    # owner_member = MemberSerializer()
 
     class Meta:
         model = Wish

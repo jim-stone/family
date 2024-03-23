@@ -21,23 +21,21 @@ h1 {
 
 
 .btn-success {
-    background-color: cadetblue;
-    opacity: 0.5;
+    background-color: green;
 }
 
 .btn-danger {
-    background-color: orchid;
-    opacity: 0.5;
+    background-color: maroon;
 }
 
 .Plus {
     display: block;
-    color: cadetblue;
+    color: green;
 }
 
 .Minus {
     display: block;
-    color: orchid;
+    color: maroon;
 }
 
 .flex-br {

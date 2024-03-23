@@ -1,7 +1,9 @@
 
 const urlOpinions = '/api/opinions/about_member/'
 const opinionsContainer = document.getElementById('opinionsContainer');
-const memberId = location.href.split('/')[4]
+
+const arr = location.href.split('/');
+const memberId = arr[arr.length - 2];
 
 const endPoint = urlOpinions + memberId;
 const header = document.getElementById('header')

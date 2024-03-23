@@ -8,17 +8,36 @@ from rest_framework.exceptions import PermissionDenied
 from .models import Family, Assessment, Member, Wish
 from .serializers import (
     FamilySerializer, AssessmentSerializer, AssessmentCreateSerializer,
-    LoginSerializer, UserSerializer, WishSerializer
+    LoginSerializer, UserSerializer, WishReadSerializer, WishWriteSerializer
 )
 from .custom_permissions import family_member_filter
 
 
-class WishViewset (viewsets.ModelViewSet):
+class WishReadViewset (viewsets.ModelViewSet):
     queryset = Wish.objects.all()
-    serializer_class = WishSerializer
+    serializer_class = WishReadSerializer
     permission_classes = [
         permissions.IsAuthenticated
     ]
+
+    @action(detail=False, methods=['get'], url_path='member/(?P<member_id>[^/.]+)')
+    def wishes_of_a_member(self, request, member_id=None):
+        member = Member.objects.get(pk=member_id)
+        if member.is_user:
+            result = Wish.objects.filter(owner_user__id=member.user.id)
+            print('user result: ', result)
+        else:
+            result = Wish.objects.filter(owner_member__id=member_id)
+            print('member result: ', result)
+        serializer = WishReadSerializer(result, many=True)
+        print(serializer.data)
+        return Response(serializer.data)
+
+    def create(self, request, member_id=None):
+        serializer = WishWriteSerializer(request.data)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
 
 
 class FamilyViewset(viewsets.ModelViewSet):

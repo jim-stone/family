@@ -19,14 +19,14 @@ from django.urls import path, include
 from rest_framework import routers
 from main.api import (FamilyViewset, AsessmentViewset,
                       LoginView, LogoutView, UserViewset,
-                      WishViewset)
+                      WishReadViewset)
 from main.views import IndexView, FamiliesView, OpinionsView, WishesView
 
 router = routers.DefaultRouter()
 router.register(r'families', FamilyViewset)
 router.register(r'opinions', AsessmentViewset)
 router.register(r'users', UserViewset)
-router.register(r'wishes', WishViewset)
+router.register(r'wishes', WishReadViewset)
 
 urlpatterns = [
     path('admin/', admin.site.urls),

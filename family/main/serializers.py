@@ -90,7 +90,7 @@ class WishReadSerializer (ModelSerializer):
     class Meta:
         model = Wish
         fields = ['owner_user', 'owner_member', 'status', 'id', 'created_on',
-                  'descriprion', 'status_value']
+                  'descriprion', 'status_value', 'provider']
 
 
 class WishWriteSerializer (ModelSerializer):

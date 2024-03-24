@@ -54,6 +54,7 @@
                             {% if user.is_authenticated %}
                             <li>
                                 <div class="dropdown-item>">Zalogowany: {{ user }}</div>
+                                <div hidden id="loggedUserID">{{user.id}}</div>
                             </li>
                             <li><a class="dropdown-item" href="#">Mój profil</a></li>
                             <li><a class="dropdown-item" href="/api/logout/">Wyloguj</a></li>

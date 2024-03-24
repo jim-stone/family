@@ -10,7 +10,30 @@ from .serializers import (
     FamilySerializer, AssessmentSerializer, AssessmentCreateSerializer,
     LoginSerializer, UserSerializer, WishReadSerializer, WishWriteSerializer
 )
-from .custom_permissions import family_member_filter
+from .custom_permissions import family_member_filter, IsWishOwnerUserOrWishHasNoOwnerUser
+
+
+class WishWriteViewset (viewsets.ModelViewSet):
+    queryset = Wish.objects.all()
+    serializer_class = WishWriteSerializer
+    permission_classes = [
+        permissions.IsAuthenticated, IsWishOwnerUserOrWishHasNoOwnerUser
+    ]
+
+    def create(self, request):
+        serializer = WishWriteSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        # response = Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response({'status_code': 201})
+
+    @action(detail=False, methods=['PATCH'], url_path='wishes_write/(?P<wish_id>[^/.]+)')
+    def change_wish_status(self, request, wish_id=None):
+        wish = Member.objects.get(pk=wish_id)
+        serializer = self.get_serializer(wish, data=request.data, partial=True)
+        serializer.is_valid()
+        serializer.save()
+        return Response({'status_code': 200})
 
 
 class WishReadViewset (viewsets.ModelViewSet):
@@ -25,19 +48,10 @@ class WishReadViewset (viewsets.ModelViewSet):
         member = Member.objects.get(pk=member_id)
         if member.is_user:
             result = Wish.objects.filter(owner_user__id=member.user.id)
-            print('user result: ', result)
         else:
             result = Wish.objects.filter(owner_member__id=member_id)
-            print('member result: ', result)
         serializer = WishReadSerializer(result, many=True)
-        print(serializer.data)
         return Response(serializer.data)
-
-    def create(self, request, member_id=None):
-        serializer = WishWriteSerializer(request.data)
-        serializer.is_valid(raise_exception=True)
-        serializer.save()
-        return Response(serializer.data, status=status.HTTP_201_CREATED)
 
 
 class FamilyViewset(viewsets.ModelViewSet):

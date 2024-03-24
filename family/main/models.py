@@ -65,7 +65,8 @@ class Wish(models.Model):
     class Status (models.IntegerChoices):
         created = 1,
         in_progress = 2,
-        completed = 3
+        completed = 3,
+        deleted = 4,
     status = models.PositiveSmallIntegerField(
         choices=Status.choices, db_index=True, default=1)
 

@@ -1,8 +1,8 @@
 
-export async function postData(url = '', data = {}) {
+export async function postData(url = '', data = {}, method = "POST") {
     const csrf_token = getCookie('csrftoken')
     const response = await fetch(url, {
-        method: "POST",
+        method: method,
         headers: {
             'Accept': 'application/json',
             'Content-Type': 'application/json',

@@ -8,5 +8,33 @@
 <div id="wishesContainer" class="containerNoFlex">
 </div>
 
-<script type="text/javascript" src="{% static 'wishes.js' %}"></script>
+
+<div class="modal fade" id="wishModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="exampleModalLabel">Nowe życzenie PlaceholderMemberName</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="input-group input-group-lg">
+                    <span class="input-group-text" id="inputGroup-sizing-lg">Opis: </span>
+                    <input type="text" class="form-control" aria-label="Sizing example input"
+                        aria-describedby="inputGroup-sizing-lg">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Anuluj</button>
+                <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Dodaj</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+</div>
+</div>`
+
+
+
+<script type="module" src="{% static 'wishes.js' %}"></script>
 {% endblock %}

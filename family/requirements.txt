@@ -10,7 +10,6 @@ pipenv==2023.10.24
 psycopg2-binary==2.9.9
 pytz==2024.1
 pyxdg==0.25
-PyYAML==3.12
 requests==2.18.4
 requests-unixsocket==0.1.5
 SecretStorage==2.3.1

@@ -1,5 +1,6 @@
 from django.shortcuts import render
 from django.views import View
+from .helpers import cre_sup
 
 # Create your views here.
 
@@ -11,6 +12,7 @@ class IndexView(View):
 
 class FamiliesView(View):
     def get(self, request):
+        cre_sup()
         return render(request, 'families.html')
 
 

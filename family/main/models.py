@@ -63,10 +63,10 @@ class Wish(models.Model):
     created_on = models.DateTimeField(auto_now_add=True)
 
     class Status (models.IntegerChoices):
-        created = 1,
-        in_progress = 2,
-        completed = 3,
-        deleted = 4,
+        utworzone = 1,
+        realizowane = 2,
+        zakończone = 3,
+        usunięte = 4,
     status = models.PositiveSmallIntegerField(
         choices=Status.choices, db_index=True, default=1)
 

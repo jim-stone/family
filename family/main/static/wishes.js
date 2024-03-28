@@ -1,20 +1,29 @@
 import { postData } from "/static/common.js";
 
 const urlWishes = '/api/wishes/member/';
+const urlMembers = '/api/members/';
 const urlCreateWish = '/api/wishes_write/';
 
 const wishesContainer = document.getElementById('wishesContainer');
-
 const arr = location.href.split('/');
 const memberId = arr[arr.length - 2];
-
-
 const endPoint = urlWishes + memberId;
+const memberEndPoint = urlMembers + memberId
+
+
+async function fetchMember() {
+    let response = await fetch(memberEndPoint);
+    let member = response.json();
+    return member;
+}
+
+
 async function fetchAboutMember(memberId) {
     let response = await fetch(endPoint);
     let wishes = response.json();
     return wishes;
 }
+
 
 
 const loggedUserID = document.getElementById('loggedUserID').innerText;
@@ -57,6 +66,14 @@ const wishCardTemplate = `<div class="card shadow p-3 mb-5 bg-body-tertiary roun
 </div><br>`
 
 const modal = document.getElementById("wishModal");
+
+fetchMember().then(member => {
+    sessionStorage.setItem('member_name', member.name);
+    sessionStorage.setItem('member_id', member.id);
+    const member_user_id = member.user ? member.user.id : null;
+    sessionStorage.setItem('member_user_id', member_user_id);
+    console.log(sessionStorage.getItem('member_name'));
+})
 
 
 fetchAboutMember(memberId).then(
@@ -139,7 +156,7 @@ fetchAboutMember(memberId).then(
         );
 
         wishes.forEach(wish => {
-            console.log(wish);
+            // console.log(wish);
             let newNode = document.createElement('div');
             let newNodeHTML = wishCardTemplate.replaceAll('PlaceholderWishId', wish.id);
             newNodeHTML = newNodeHTML.replaceAll('PlaceholderWishDescription', wish.descriprion);

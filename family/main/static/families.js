@@ -62,6 +62,8 @@ async function fetchFamilies() {
 }
 
 
+
+
 fetchFamilies().then(families => {
 
   if (families == '') {
@@ -82,8 +84,12 @@ fetchFamilies().then(families => {
       let newNodeHTML = memberCardTemplate.replaceAll('PlaceholderMemberName', element.name);
       newNodeHTML = newNodeHTML.replaceAll('PlaceholderMemberId', element.id);
       newNode.innerHTML = newNodeHTML;
-      let opinionsLink = newNode.getElementsByClassName("opinionsLink")
       membersContainer.appendChild(newNode)
+
+      // let opinionsLink = document.getElementById(`/opinions/${element.id}`);
+      // let wishesLink = document.getElementById(`/wishes/${element.id}`);
+
+
       let plusButton = newNode.getElementsByClassName("btn")[0]
       let minusButton = newNode.getElementsByClassName("btn")[1]
 

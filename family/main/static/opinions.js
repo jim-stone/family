@@ -17,6 +17,7 @@ async function fetchAboutMember(memberId) {
 
 fetchAboutMember(memberId).then(
     opinions => {
+        console.log('ssss: ', sessionStorage);
         opinions.forEach(opinion => {
             header.innerText = `Opinie o ${opinion.member_target.name}`;
             let newElement = document.createElement('tr');

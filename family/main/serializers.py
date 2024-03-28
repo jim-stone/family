@@ -10,6 +10,7 @@ class MemberSerializer(ModelSerializer):
     class Meta:
         model = Member
         fields = '__all__'
+        depth = 2
 
 
 class FamilySerializer (ModelSerializer):
@@ -23,6 +24,20 @@ class FamilySerializer (ModelSerializer):
 class AssessmentSerializer(ModelSerializer):
     member_target = MemberSerializer()
     member_source = MemberSerializer()
+    plus_count = SerializerMethodField(read_only=True)
+    minus_count = SerializerMethodField(read_only=True)
+
+    def get_plus_count(self, obj):
+        return Assessment.objects.filter(
+            member_target_id=obj.member_target_id,
+            value=1
+        ).count()
+
+    def get_minus_count(self, obj):
+        return Assessment.objects.filter(
+            member_target_id=obj.member_target_id,
+            value=-1
+        ).count()
 
     class Meta:
         model = Assessment

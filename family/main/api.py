@@ -8,9 +8,18 @@ from rest_framework.exceptions import PermissionDenied
 from .models import Family, Assessment, Member, Wish
 from .serializers import (
     FamilySerializer, AssessmentSerializer, AssessmentCreateSerializer,
-    LoginSerializer, UserSerializer, WishReadSerializer, WishWriteSerializer
+    LoginSerializer, UserSerializer, WishReadSerializer, WishWriteSerializer,
+    MemberSerializer
 )
 from .custom_permissions import family_member_filter, IsWishOwnerUserOrWishHasNoOwnerUser
+
+
+class MemberViewSet(viewsets.ModelViewSet):
+    queryset = Member.objects.all()
+    serializer_class = MemberSerializer
+    permission_classes = [
+        permissions.IsAuthenticated
+    ]
 
 
 class WishWriteViewset (viewsets.ModelViewSet):

@@ -4,7 +4,7 @@ const urlFamilies = '/api/families/'
 const urlOpinions = '/api/opinions/'
 const membersContainer = document.getElementById('membersContainer')
 
-const memberCardTemplate = `<div class="card" style="width: 10rem;" id="PlaceholderMemberId">
+const memberCardTemplate = `<div class="card" style="width: 12rem;" id="PlaceholderMemberId">
     <div class="card-body">
         <div class="card-subtitle">PlaceholderMemberName</div>
         <br>
@@ -24,7 +24,12 @@ const memberCardTemplate = `<div class="card" style="width: 10rem;" id="Placehol
             </svg>
         </button>
         <br><br>
-        <p><a href="/opinions/PlaceholderMemberId" class="opinionsLink">Lista ocen</a></p>
+        <p><a href="/opinions/PlaceholderMemberId" class="opinionsLink">Lista ocen</a>&nbsp;&nbsp;
+
+        </p>
+        
+      
+    
         <p><a href="/wishes/PlaceholderMemberId" class="wishesLink">Lista życzeń</a></p>
 
 
@@ -86,9 +91,13 @@ fetchFamilies().then(families => {
       newNode.innerHTML = newNodeHTML;
       membersContainer.appendChild(newNode)
 
+
       // let opinionsLink = document.getElementById(`/opinions/${element.id}`);
       // let wishesLink = document.getElementById(`/wishes/${element.id}`);
 
+
+      // let PlusCounter = newNode.getElementsByClassName("badge")[0]
+      // let MinusCounter = newNode.getElementsByClassName("badge")[1]
 
       let plusButton = newNode.getElementsByClassName("btn")[0]
       let minusButton = newNode.getElementsByClassName("btn")[1]

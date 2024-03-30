@@ -67,13 +67,13 @@ const wishCardTemplate = `<div class="card shadow p-3 mb-5 bg-body-tertiary roun
 
 const modal = document.getElementById("wishModal");
 
-fetchMember().then(member => {
-    sessionStorage.setItem('member_name', member.name);
-    sessionStorage.setItem('member_id', member.id);
-    const member_user_id = member.user ? member.user.id : null;
-    sessionStorage.setItem('member_user_id', member_user_id);
-    console.log(sessionStorage.getItem('member_name'));
-})
+// fetchMember().then(member => {
+//     sessionStorage.setItem('member_name', member.name);
+//     sessionStorage.setItem('member_id', member.id);
+//     const member_user_id = member.user ? member.user.id : null;
+//     sessionStorage.setItem('member_user_id', member_user_id);
+//     console.log(sessionStorage.getItem('member_name'));
+// })
 
 
 fetchAboutMember(memberId).then(
@@ -173,7 +173,7 @@ fetchAboutMember(memberId).then(
             const deleteButton = document.getElementById('deleteButton' + wish.id);
             const url = urlCreateWish + wish.id + '/';
             let ownerUser = wish.owner_user ? wish.owner_user.id : null
-            let msg = '';
+            let permErrMsg = 'Nie możesz wykonać tej akcji za innego użytkownika';
 
             takeButton.addEventListener('click', function (event) {
                 postData(url, {
@@ -192,11 +192,9 @@ fetchAboutMember(memberId).then(
                     'status': 3,
                     'ownerUser': ownerUser
                 }, 'PATCH').then(response => {
-                    console.log(response);
-                    if (response.status_code != 200) {
-                        msg = 'Nie możesz wykonać tej akcji za innego użytkownika'
+                    if (response['detail'] == permErrMsg) {
+                        window.alert(permErrMsg);
                     };
-                    window.alert(msg);
                     location.reload();
                 })
             });
@@ -206,11 +204,9 @@ fetchAboutMember(memberId).then(
                     'status': 4,
                     'ownerUser': ownerUser
                 }, 'PATCH').then(response => {
-                    console.log(response);
-                    if (response.status_code != 200) {
-                        msg = 'Nie możesz wykonać tej akcji za innego użytkownika'
+                    if (response['detail'] == permErrMsg) {
+                        window.alert(permErrMsg);
                     };
-                    window.alert(msg);
                     location.reload();
                 })
             });

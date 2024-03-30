@@ -6,7 +6,17 @@ from rest_framework.serializers import (
 from .models import Family, Member, Assessment, Wish
 
 
+class UserReadSerializer (ModelSerializer):
+
+    class Meta:
+        model = User
+        fields = ['id', 'first_name', 'last_name',
+                  'username', 'email', 'members']
+
+
 class MemberSerializer(ModelSerializer):
+    user = UserReadSerializer(read_only=True)
+
     class Meta:
         model = Member
         fields = '__all__'

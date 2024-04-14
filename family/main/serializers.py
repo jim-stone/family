@@ -2,7 +2,7 @@ from django.contrib.auth import authenticate
 from django.contrib.auth.models import User
 from rest_framework.serializers import (
     ModelSerializer, Serializer, CharField, ValidationError,
-    SerializerMethodField, ChoiceField)
+    SerializerMethodField, ChoiceField, HiddenField, CurrentUserDefault)
 from .models import Family, Member, Assessment, Wish
 
 
@@ -24,11 +24,29 @@ class MemberSerializer(ModelSerializer):
 
 
 class FamilySerializer (ModelSerializer):
-    members = MemberSerializer(many=True)
+    members = MemberSerializer(many=True, read_only=True)
+    user_id = HiddenField(default=CurrentUserDefault())
 
     class Meta:
         model = Family
-        fields = ['name', 'id', 'members']
+        fields = ['name', 'id', 'members', 'user_id']
+
+    def create(self, validated_data):
+        newFamily = Family.objects.create(
+            **{k: v for (k, v) in validated_data.items() if k == 'name'}
+        )
+
+        memberUser = validated_data['user_id']
+
+        newMemberData = dict(
+            user=memberUser,
+            name=memberUser.username,
+            is_user=True,
+            family=newFamily,
+            is_boss=True
+        )
+        Member.objects.create(**newMemberData)
+        return newFamily
 
 
 class AssessmentSerializer(ModelSerializer):

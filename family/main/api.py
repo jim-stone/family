@@ -76,6 +76,13 @@ class FamilyViewset(viewsets.ModelViewSet):
         serializer = FamilySerializer(queryset, many=True)
         return Response(serializer.data)
 
+    def create(self, request):
+        serializer = FamilySerializer(data=request.data,
+                                      context={'request': request})
+        if serializer.is_valid():
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
 
 class AsessmentViewset(viewsets.ViewSet):
     queryset = Assessment.objects.all()
